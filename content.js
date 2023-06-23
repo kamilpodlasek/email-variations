@@ -1,7 +1,7 @@
 const buttonWidth = 20
 const buttonPadding = 5
 
-chrome.storage.sync.get({ email: 'example@gmail.com' }, ({ email }) => {
+chrome.storage.sync.get({ email: 'CHANGE_ME@gmail.com' }, ({ email }) => {
   const currentDomain = window.location.hostname.replace(/^www\./i, '')
 
   const emailInputs = document.querySelectorAll('input[type="email"]')

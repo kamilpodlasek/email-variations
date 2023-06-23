@@ -1,6 +1,71 @@
+<!DOCTYPE html>
 <html>
-  <body>
-    <h1>Popup</h1>
-    <script src="popup.js"></script>
-  </body>
+<head>
+  <title>Email Update Popup</title>
+  <meta charset='UTF-8' />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *:before, *:after {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      color: #FFFFFF;
+      width: 400px;
+      padding: 20px;
+      background-color: #F81894;
+    }
+
+    h1 {
+      font-size: 1.563rem;
+    }
+
+    p {
+      font-size: 1rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 1rem;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 8px;
+      border-width: 0;
+      background-color: #FFFFFF;
+      font-size: 1.25rem;
+      color: rgba(0, 0, 0, 0.7);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 24px;
+      background-color: #FFFFFF;
+      border: none;
+      outline: none;
+      color: #F81894;
+      font-size: 1.25rem;
+      line-height: 1.25rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Gmail Variations</h1>
+  <p>Input different Gmail address for every domain using '+' sign</p>
+  <form onsubmit="handleSubmit()">
+    <label for="emailInput">Your Gmail:</label>
+    <input autofocus type="text" id="emailInput">
+    <button id="updateButton" type="submit">Update</button>
+  </form>
+
+  <script src="popup.js"></script>
+</body>
 </html>
