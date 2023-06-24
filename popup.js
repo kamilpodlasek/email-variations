@@ -19,6 +19,11 @@ function handleSubmit(e) {
     emailInput.value = updatedEmail
 
     updateButton.innerText = 'Update ✅'
+
+    // trigger a rerender of the input buttons - they need a new onclick now that the email has changed
+    chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+      chrome.tabs.sendMessage(tabs[0].id, { action: 'handleEmailInputs' })
+    })
   })
 }
 

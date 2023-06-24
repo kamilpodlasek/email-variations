@@ -34,9 +34,15 @@ function generateButton(emailInput) {
   return button
 }
 
-function handleEmailInputs(emailInputs) {
+function handleEmailInputs(emailInputs, options = { forceRerender: false }) {
   chrome.storage.sync.get({ email: 'CHANGE_ME@email.com' }, ({ email }) => {
     const currentDomain = window.location.hostname.replace(/^www\./i, '')
+
+    if (options.forceRerender) {
+      const buttons = document.getElementsByClassName(buttonClassName)
+
+      Array.from(buttons).forEach(button => button.remove())
+    }
 
     for (const emailInput of emailInputs) {
       const buttonAlreadyAdded = emailInput.nextSibling?.className === buttonClassName
@@ -87,3 +93,10 @@ handleEmailInputs(emailInputs)
 
 // handle new inputs added to DOM
 observeNewInputs()
+
+// handle inputs update when user email is changed in popup.js
+chrome.runtime.onMessage.addListener(message => {
+  if (message.action === 'handleEmailInputs') {
+    handleEmailInputs(emailInputs, { forceRerender: true })
+  }
+})
