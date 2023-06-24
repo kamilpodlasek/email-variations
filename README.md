@@ -1,5 +1,7 @@
 # Email Variations Chrome Extension
 
+![Input email](https://github.com/kamilpodlasek/email-variations/blob/main/materials/usage.gif?raw=true)
+
 The **Email Variations** Chrome extension inputs different email addresses for every website using the '+' sign, e.g. **you+twitter.com@gmail.com**. This extension enhances your email input fields by adding a button that generates unique email addresses specific to the domain you are currently on.
 
 ## Why use it?
@@ -20,7 +22,12 @@ The **Email Variations** Chrome extension inputs different email addresses for e
 ## Usage
 
 1. Configure your email address:
-2. Press the Email Variation button inside an email input:
+
+![Configure email](https://github.com/kamilpodlasek/email-variations/blob/main/materials/setup.gif?raw=true)
+
+1. Press the Email Variation button inside an email input:
+
+![Input email](https://github.com/kamilpodlasek/email-variations/blob/main/materials/usage.gif?raw=true)
 
 ## Support and Contributions
 
