@@ -23,7 +23,7 @@ function handleSubmit(e) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  chrome.storage.sync.get({ email: 'CHANGE_ME@gmail.com' }, data => {
+  chrome.storage.sync.get({ email: 'CHANGE_ME@email.com' }, data => {
     getEmailInput().value = data.email
   })
 

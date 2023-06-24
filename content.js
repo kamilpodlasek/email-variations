@@ -1,39 +1,89 @@
+const buttonClassName = 'email-variations_fill-button'
 const buttonWidth = 20
 const buttonPadding = 5
 
-chrome.storage.sync.get({ email: 'CHANGE_ME@gmail.com' }, ({ email }) => {
-  const currentDomain = window.location.hostname.replace(/^www\./i, '')
+// match inputs with type email and inputs with name containing the word "email" (case insensitive)
+const isNodeEmailField = node =>
+  node.tagName === 'INPUT' && (node.type === 'email' || (node.name && /email/i.test(node.name)))
+const emailFieldQuerySelector = 'input[type="email"], input[name*="email" i]'
 
-  const emailInputs = document.querySelectorAll('input[type="email"]')
+function generateButton(emailInput) {
+  const inputRect = emailInput.getBoundingClientRect()
 
-  for (const emailInput of emailInputs) {
-    const inputRect = emailInput.getBoundingClientRect()
-    if (!inputRect.width && !inputRect.height) return
+  const inputIsHidden = !inputRect.width && !inputRect.height
+  if (inputIsHidden) return
 
-    const top = emailInput.offsetTop + buttonPadding
-    const left = emailInput.offsetLeft + inputRect.width - buttonWidth - buttonPadding
+  const button = document.createElement('div')
+  button.className = buttonClassName
+  button.style.position = 'absolute'
+  button.style.width = `${buttonWidth}px`
+  button.style.height = '12px'
+  button.style.borderRadius = '12px'
+  button.style.backgroundColor = '#F81894'
+  button.style.lineHeight = '10px'
+  button.style.cursor = 'pointer'
+  button.style.color = '#FFFFFF'
+  button.style.fontSize = '10px'
+  button.style.fontWeight = 'bold'
+  button.style.textAlign = 'center'
+  button.style.lineHeight = '10px'
+  button.textContent = '+@'
+  button.style.top = emailInput.offsetTop + buttonPadding + 'px'
+  button.style.left = emailInput.offsetLeft + inputRect.width - buttonWidth - buttonPadding + 'px'
 
-    const button = document.createElement('div')
-    button.style.position = 'absolute'
-    button.style.width = `${buttonWidth}px`
-    button.style.height = '12px'
-    button.style.borderRadius = '12px'
-    button.style.backgroundColor = '#F81894'
-    button.style.lineHeight = '10px'
-    button.style.cursor = 'pointer'
-    button.style.color = '#FFFFFF'
-    button.style.fontSize = '10px'
-    button.style.fontWeight = 'bold'
-    button.style.textAlign = 'center'
-    button.style.lineHeight = '10px'
-    button.textContent = '+@'
-    button.style.top = `${top}px`
-    button.style.left = `${left}px`
+  return button
+}
 
-    button.addEventListener('click', () => {
-      emailInput.value = email.replace('@', `+${currentDomain}@`)
-    })
+function handleEmailInputs(emailInputs) {
+  chrome.storage.sync.get({ email: 'CHANGE_ME@email.com' }, ({ email }) => {
+    const currentDomain = window.location.hostname.replace(/^www\./i, '')
 
-    emailInput.insertAdjacentElement('afterend', button)
+    for (const emailInput of emailInputs) {
+      const buttonAlreadyAdded = emailInput.nextSibling?.className === buttonClassName
+      if (buttonAlreadyAdded) continue
+
+      const button = generateButton(emailInput)
+      if (!button) continue
+
+      button.addEventListener('click', () => {
+        // simulate user input by dispatching events, to make it work with contolled inputs
+        const inputEvent = new Event('input', { bubbles: true })
+        emailInput.value = email.replace('@', `+${currentDomain}@`)
+        emailInput.dispatchEvent(inputEvent)
+      })
+
+      emailInput.insertAdjacentElement('afterend', button)
+    }
+  })
+}
+
+function traverseNodes(nodeList) {
+  for (const node of nodeList) {
+    if (isNodeEmailField(node)) {
+      handleEmailInputs([node])
+    } else if (node.children?.length) {
+      traverseNodes(node.children)
+    }
   }
-})
+}
+
+function observeNewInputs() {
+  const observer = new MutationObserver(mutationsList => {
+    for (const mutation of mutationsList) {
+      if (mutation.type === 'childList') {
+        const addedNodes = Array.from(mutation.addedNodes)
+        traverseNodes(addedNodes)
+      }
+    }
+  })
+
+  observer.observe(document.body, { childList: true, subtree: true })
+}
+
+const emailInputs = document.querySelectorAll(emailFieldQuerySelector)
+
+// handle existing inputs
+handleEmailInputs(emailInputs)
+
+// handle new inputs added to DOM
+observeNewInputs()

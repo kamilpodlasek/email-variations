@@ -1,6 +1,6 @@
 {
-  "name": "Gmail Variations",
-  "description": "Input different Gmail address for every domain using '+' sign",
+  "name": "Email Variations",
+  "description": "Input different email address for every domain using '+' sign",
   "version": "1.0",
   "manifest_version": 3,
   "action": {
