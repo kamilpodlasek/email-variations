@@ -1,6 +1,6 @@
 {
   "name": "Email Variations",
-  "description": "Input different email address for every domain using '+' sign",
+  "description": "Input different email address for every website using the '+' sign, e.g. you+twitter.com@gmail.com",
   "version": "1.0",
   "manifest_version": 3,
   "action": {
